@@ -1,0 +1,19 @@
+# UniKit hub aliases — inherited from the previous hub Worker (apps/hub in
+# unikit-ui). Exact + splat forms; specific rules stay above general ones.
+# Cloudflare Pages evaluates these only when no static asset matches.
+
+/ui     https://ui.ll3.kr 302
+/ui/*   https://ui.ll3.kr/:splat 302
+
+/scriptca     https://scriptca.ll3.kr 302
+/scriptca/*   https://scriptca.ll3.kr/:splat 302
+
+# rustra.ll3.kr is not deployed yet (deploy-rustra.yml on unikit-ui main is
+# pending its Pages-project-create fix). Point the alias at the repo until the
+# site goes live, then flip both lines to https://rustra.ll3.kr.
+/rustra     https://github.com/loopy-lim/unikit-bridge 302
+/rustra/*   https://github.com/loopy-lim/unikit-bridge 302
+
+# SPA fallback — 마지막 규칙. 에셋은 항상 우선하고, 위 alias에 안 걸린
+# 경로(오탈자 URL 등)도 사이트 크롬을 유지한 채 index로 안내한다.
+/* /index.html 200

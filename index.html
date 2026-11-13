@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniKit — ll3.kr 툴체인 패밀리</title>
+    <meta
+      name="description"
+      content="네이티브 코어와 범용 UI를 잇는 툴체인 패밀리 — unikit-ui, rustra(unikit-bridge), scriptca의 소개와 CI 상태를 안내합니다."
+    />
+    <meta property="og:title" content="UniKit — ll3.kr toolchain family" />
+    <meta
+      property="og:description"
+      content="unikit-ui · rustra · scriptca — 세 프로젝트의 소개, 배포 사이트, npm/crates 패키지, CI 상태를 한 곳에서."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://unikit.ll3.kr" />
+    <script>
+      // Pre-paint: restore the saved color scheme so the first frame already
+      // matches what the visitor chose last time (key = UnikitThemeProvider
+      // storageKey in src/main.tsx).
+      try {
+        if (localStorage.getItem('unikit-theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {
+        /* storage unavailable — defaults apply */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

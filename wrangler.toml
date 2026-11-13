@@ -1,0 +1,8 @@
+# Cloudflare Pages project for the UniKit family portal.
+# Deploy: `.github/workflows/deploy.yml` (wrangler-action) — needs the
+# CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID repo secrets.
+# Custom domain (unikit.ll3.kr) is attached by the deploy workflow via the
+# Cloudflare API.
+name = "unikit"
+compatibility_date = "2026-11-14"
+pages_build_output_dir = "dist"

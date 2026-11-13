@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+@import '@fontsource/syne/700.css';
+@import '@fontsource/syne/800.css';
+@import '@fontsource/public-sans/400.css';
+@import '@fontsource/public-sans/500.css';
+@import '@fontsource/public-sans/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+/* UniKit web activation (docs/install.md): the `web:` variant, plus scanning
+   the package's own class strings (bridge primitives ship base classes).
+   Standalone repo — node_modules sits at the consumer root, so the path is
+   the standard one (scriptca 사이트는 hoisted linker로 한 단계 위였음). */
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant web (&:where(:root, :root *));
+@source '../node_modules/@unikit-bridge/ui/src';
+
+/* UniKit design tokens — zinc preset (registry `theme` item: 19 colors + radius).
+   apps/web · scriptca site와 동일한 값. */
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(240 10% 3.9%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(240 10% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(240 10% 3.9%);
+  --primary: hsl(240 5.9% 10%);
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(240 4.8% 95.9%);
+  --secondary-foreground: hsl(240 5.9% 10%);
+  --muted: hsl(240 4.8% 95.9%);
+  --muted-foreground: hsl(240 3.8% 46.1%);
+  --accent: hsl(240 4.8% 95.9%);
+  --accent-foreground: hsl(240 5.9% 10%);
+  --destructive: hsl(0 72.2% 50.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(240 5.9% 90%);
+  --input: hsl(240 5.9% 90%);
+  --ring: hsl(240 5.9% 10%);
+  --radius: 0.5rem;
+
+  /* 캔버스 격자 — apps/web site.css의 마케팅 표면 값 */
+  --site-grid: rgba(24, 24, 27, 0.065);
+  --site-wash: rgba(24, 24, 27, 0.05);
+  --site-grid-size: 56px;
+}
+
+.dark {
+  --background: hsl(240 10% 3.9%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(240 10% 3.9%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(240 10% 3.9%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(240 5.9% 10%);
+  --secondary: hsl(240 3.7% 15.9%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 5% 64.9%);
+  --accent: hsl(240 3.7% 15.9%);
+  --accent-foreground: hsl(0 0% 98%);
+  --destructive: hsl(0 72% 65%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(240 3.7% 15.9%);
+  --input: hsl(240 3.7% 15.9%);
+  --ring: hsl(240 4.9% 83.9%);
+
+  --site-grid: rgba(250, 250, 250, 0.055);
+  --site-wash: rgba(250, 250, 250, 0.04);
+}
+
+@theme inline {
+  --font-sans: 'Public Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* Korean: never break a word mid-syllable — keep-all + safe overflow */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+}
+
+@layer utilities {
+  /* 패밀리 디스플레이 타이포 — apps/web · rustra 사이트와 동일한 역할 */
+  .site-display {
+    font-family: var(--font-display);
+  }
+  .site-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* 랜딩 캔버스 — apps/web .site-canvas: 방사형 워시 + 56px 격자.
+   * 셀은 섹션 border와 겹치지 않게 크게, 끝줄에만 선을 그린다(이중선 방지). */
+  .site-canvas {
+    background-image:
+      radial-gradient(ellipse 90% 50% at 50% -8%, var(--site-wash), transparent 68%),
+      linear-gradient(
+        to right,
+        transparent calc(var(--site-grid-size) - 1px),
+        var(--site-grid) calc(var(--site-grid-size) - 1px),
+        var(--site-grid) var(--site-grid-size)
+      ),
+      linear-gradient(
+        to bottom,
+        transparent calc(var(--site-grid-size) - 1px),
+        var(--site-grid) calc(var(--site-grid-size) - 1px),
+        var(--site-grid) var(--site-grid-size)
+      );
+    background-size:
+      auto,
+      var(--site-grid-size) var(--site-grid-size),
+      var(--site-grid-size) var(--site-grid-size);
+  }
+
+  .site-focusable:focus-visible {
+    /* --ring은 완성된 hsl() 값 — hsl()로 다시 감싸면 무효가 된다. */
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
