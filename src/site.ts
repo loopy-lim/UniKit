@@ -56,7 +56,6 @@ export const PROJECTS: Project[] = [
     workflows: [
       { path: 'ci.yml', label: 'CI' },
       { path: 'deploy-pages.yml', label: 'Pages 배포' },
-      { path: 'deploy-hub.yml', label: 'Hub 배포' },
       { path: 'publish.yml', label: 'npm 게시' },
     ],
   },
@@ -77,6 +76,7 @@ export const PROJECTS: Project[] = [
     aliasTarget: 'rustra.ll3.kr',
     workflows: [
       { path: 'ci.yml', label: 'CI · 18-job 게이트' },
+      { path: 'site.yml', label: '사이트 배포' },
       { path: 'release.yml', label: '릴리스' },
       { path: 'bench.yml', label: '벤치마크' },
       { path: 'fuzz.yml', label: 'Fuzz' },
