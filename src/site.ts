@@ -28,12 +28,12 @@ export type Project = {
   tagline: string;
   body: string;
   repo: string;
-  /** 배포된 사이트 — 없으면 사이트 링크를 생략한다 (rustra는 배포 예정). */
+  /** 배포된 사이트 — 없으면 사이트 링크를 생략한다. */
   site?: string;
   siteNote?: string;
   packages: PackageRef[];
   stack: string[];
-  /** 허브 경로 alias — 표시용 단일 출처(기능은 public/_redirects가 담당). */
+  /** 허브 경로 alias — 표시용 단일 출처(기능은 hub/src/index.js가 담당). */
   aliasPath: string;
   aliasTarget: string;
   aliasNote?: string;
@@ -67,15 +67,14 @@ export const PROJECTS: Project[] = [
     body:
       'unikit codegen이 플랫폼별 타입 안전 클라이언트를 만들고, 컴팩트 바이너리 와이어(Frame)로 통신합니다. 계약 해시 게이트(unikit diff)가 스키마 깨짐을 CI에서 차단합니다.',
     repo: 'loopy-lim/unikit-bridge',
-    siteNote: 'rustra.ll3.kr 배포 예정',
+    site: 'https://rustra.ll3.kr',
     packages: [
       { name: '@unikit-bridge/rustra', url: npmUrl('@unikit-bridge/rustra'), registry: 'npm' },
       { name: 'unikit-bridge', registry: 'crates.io' },
     ],
     stack: ['Rust', 'TypeScript', 'Tauri', 'React Native'],
     aliasPath: 'unikit.ll3.kr/rustra',
-    aliasTarget: 'github.com/loopy-lim/unikit-bridge',
-    aliasNote: '사이트 배포 후 rustra.ll3.kr로 전환',
+    aliasTarget: 'rustra.ll3.kr',
     workflows: [
       { path: 'ci.yml', label: 'CI · 18-job 게이트' },
       { path: 'release.yml', label: '릴리스' },

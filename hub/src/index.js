@@ -1,34 +1,25 @@
 /**
- * unikit.ll3.kr → Pages 포털 프록시.
- * 원본: https://unikit-ehv.pages.dev (deploy.yml이 dist를 배포).
- * _redirects(/ui, /scriptca, /rustra 302 · SPA 폴백)는 Pages가 처리하고,
- * 이 워커는 경로·쿼리를 그대로 넘기고 응답(302 포함)을 투명하게 돌려준다.
+ * unikit.ll3.kr 진입 워커 — dist/ 정적 자산 서빙 + 옛 허브의 경로 alias.
+ * 자산 본체는 [assets](wrangler.toml)가, 없는 경로의 SPA 폴백은
+ * not_found_handling이 처리한다. 여기선 alias 302만 담당한다.
  */
-const ORIGIN = 'https://unikit-ehv.pages.dev';
+const ALIASES = {
+  '/ui': 'https://ui.ll3.kr',
+  '/scriptca': 'https://scriptca.ll3.kr',
+  '/rustra': 'https://rustra.ll3.kr',
+};
 
 export default {
-  async fetch(request) {
-    const incoming = new URL(request.url);
-    const outgoing = new URL(ORIGIN);
-    outgoing.pathname = incoming.pathname;
-    outgoing.search = incoming.search;
-
-    // host/hop-by-hop/cf-* 헤더는 하위 요청에서 설정 불가 — 걷어낸다.
-    const headers = new Headers();
-    for (const [key, value] of request.headers) {
-      const k = key.toLowerCase();
-      if (k === 'host' || k === 'connection' || k === 'content-length' || k.startsWith('cf-') || k.startsWith('x-forwarded')) {
-        continue;
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    for (const [prefix, target] of Object.entries(ALIASES)) {
+      if (url.pathname === prefix || url.pathname.startsWith(prefix + '/')) {
+        const dest = new URL(target);
+        dest.pathname = url.pathname.slice(prefix.length) || '/';
+        dest.search = url.search;
+        return Response.redirect(dest.toString(), 302);
       }
-      headers.set(key, value);
     }
-
-    // redirect: 'manual' — Pages의 302를 워커가 따라가지 않고 브라우저로 통과.
-    return fetch(outgoing, {
-      method: request.method,
-      headers,
-      body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body,
-      redirect: 'manual',
-    });
+    return env.ASSETS.fetch(request);
   },
 };

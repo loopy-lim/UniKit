@@ -118,9 +118,8 @@ function AliasesSection() {
       <div className={SHELL}>
         <h2 className="site-display text-2xl font-bold tracking-tight sm:text-3xl">경로 alias</h2>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          이전 허브 워커가 맡았던 단축 경로입니다. Cloudflare Pages{" "}
-          <code className="site-mono text-[0.95em]">_redirects</code>가 이어받아
-          redirection합니다.
+          이전 허브 워커가 맡았던 단축 경로입니다. 입구 워커(<code className="site-mono text-[0.95em]">unikit-hub</code>)가
+          이어받아 redirection합니다.
         </p>
         <ul className="mt-8 flex flex-col gap-2">
           {PROJECTS.map((p) => (
