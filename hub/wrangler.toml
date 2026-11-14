@@ -1,0 +1,13 @@
+# unikit.ll3.kr 진입 워커 — 기존 unikit-hub 자리를 이어받은 얇은 프록시.
+# 배포 원본은 Cloudflare Pages(unikit-ehv.pages.dev)이고 CI(deploy.yml)가
+# dist를 올린 뒤 이 워커를 재배포한다. 커스텀 도메인 unikit.ll3.kr은
+# Workers Custom Domain(API로 attach)이 DNS·인증서를 관리한다.
+name = "unikit-hub"
+main = "src/index.js"
+compatibility_date = "2026-11-14"
+workers_dev = false
+
+# 커스텀 도메인 바인딩 — deploy 시 attach된다 (DNS·인증서는 Cloudflare가 관리).
+routes = [
+  { pattern = "unikit.ll3.kr", custom_domain = true },
+]

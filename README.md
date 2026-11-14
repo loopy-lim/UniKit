@@ -21,12 +21,15 @@ grid canvas)는 apps/web·rustra 사이트를 계승한다.
 - `src/ci.ts` — GitHub Actions 라이브 상태(무인증 퍼블릭 API, sessionStorage 3분 캐시)
 - `public/_redirects` — 허브 단축 경로(`/ui`, `/scriptca`, `/rustra`).
   이전 허브 워커(unikit-ui apps/hub)를 대체한다.
+- `hub/` — unikit.ll3.kr 진입 워커(`unikit-hub`). Pages 배포(unikit-ehv.pages.dev)로
+  투명 프록시하는 얇은 워커로, 기존 허브가 맡던 자리를 이어받았다.
 
 ## 배포
 
 `.github/workflows/deploy.yml` — push to main → typecheck + build →
-Cloudflare Pages 프로젝트 `unikit` 배포 + `unikit.ll3.kr` 도메인 연결.
-시크릿: `CLOUDFLARE_API_TOKEN`(Pages:Edit), `CLOUDFLARE_ACCOUNT_ID`.
+Cloudflare Pages 프로젝트 `unikit` 배포 → 허브 워커 재배포. `unikit.ll3.kr`은
+워커의 Workers Custom Domain(라우트 `custom_domain = true`)이 DNS·인증서를
+관리한다. 시크릿: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 
 ## 로컬 개발
 

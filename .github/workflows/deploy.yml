@@ -1,6 +1,5 @@
-# UniKit 포털 사이트 → Cloudflare Pages (정적 dist/)
-# 패밀리 배포 패턴(deploy-pages.yml / site.yml)과 동일: 시크릿은
-# CLOUDFLARE_API_TOKEN(Pages:Edit) + CLOUDFLARE_ACCOUNT_ID.
+# UniKit 포털 — Cloudflare Pages(정적 dist/) + 허브 워커(unikit.ll3.kr 진입).
+# 시크릿은 CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID.
 name: Deploy Pages
 
 on:
@@ -75,16 +74,14 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=unikit --branch=main
 
-      - name: Attach custom domain
+      # unikit.ll3.kr은 허브 워커(unikit-hub)가 프록시로 연다. 원본은 위 Pages
+      # 배포이고, 커스텀 도메인 바인딩은 wrangler.toml의 custom_domain 라우트가
+      # 관리한다 (attach는 API 직접 호출 대신 이 경로로만 — 10405 참조).
+      - name: Deploy hub worker (unikit.ll3.kr)
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
-        run: |
-          echo "Attaching custom domain unikit.ll3.kr to Pages..."
-          curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/pages/projects/unikit/domains" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data '{"name":"unikit.ll3.kr"}' | jq . || true
-
-          echo "Querying Pages domains status..."
-          curl -s -X GET "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/pages/projects/unikit/domains" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-            -H "Content-Type: application/json" | jq . || true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: hub
+          command: deploy
